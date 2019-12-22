@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/round_background_primary"
+    android:paddingEnd="20dp"
+    android:paddingStart="20dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp"
+    android:layout_marginBottom="5dp">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/entry_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Activity Name"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:id="@+id/entry_tags_container"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp">
+
+            <include layout="@layout/recent_entry_tag_template"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/entry_timestamps"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Start time - End time"
+            android:textColor="@color/colorPrimaryDark" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/entry_duration"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorGrey"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        android:layout_marginEnd="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
+        android:id="@+id/entry_tracking_marker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TRACKING"
+        android:textColor="@color/colorEnd"
+        android:textStyle="bold"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
