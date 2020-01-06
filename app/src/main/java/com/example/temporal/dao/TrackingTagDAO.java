@@ -17,13 +17,17 @@ public interface TrackingTagDAO {
 
 
     @Insert
-    void insert(TrackingTag trackingTag);
+    long insert(TrackingTag trackingTag);
 
     @Update
     void update(TrackingTag trackingTag);
 
     @Delete
     void delete(TrackingTag trackingTag);
+
+
+    @Query("DELETE FROM tracking_tag_table")
+    void deleteAll();
 
 
     @Transaction

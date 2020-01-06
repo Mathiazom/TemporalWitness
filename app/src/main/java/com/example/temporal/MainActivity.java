@@ -2,10 +2,13 @@ package com.example.temporal;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 
 import android.os.Bundle;
 
-import com.example.temporal.fragments.RecentEntriesFragment;
+import com.example.temporal.fragments.RecentTrackingEntriesFragment;
+import com.example.temporal.fragments.RecentTrackingEntriesFragmentDirections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -14,13 +17,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        final FragmentManager fragmentManager = getSupportFragmentManager();
+    }
 
-        final RecentEntriesFragment recentEntriesFragments = new RecentEntriesFragment();
-
-        fragmentManager.beginTransaction()
-                .add(R.id.main_fragment_frame,recentEntriesFragments)
-                .commit();
+    @Override
+    public boolean onSupportNavigateUp() {
+        return Navigation.findNavController(this, R.id.nav_host_fragment).navigateUp();
     }
 
 }

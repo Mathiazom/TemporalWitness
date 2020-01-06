@@ -10,32 +10,30 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSmoothScroller;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.temporal.R;
 import com.example.temporal.adapters.RecentEntriesRecyclerAdapter;
-import com.example.temporal.models.SparseTrackingEntry;
-import com.example.temporal.models.TrackingActivity;
 import com.example.temporal.models.TrackingEntry;
 import com.example.temporal.models.TrackingTag;
 import com.example.temporal.testing.AssertionException;
 import com.example.temporal.viewmodels.TrackingEntryViewModel;
 import com.example.temporal.viewmodels.TrackingTagViewModel;
 
-import java.util.Calendar;
 import java.util.List;
 
-public class RecentEntriesFragment extends Fragment {
+public class RecentTrackingEntriesFragment extends Fragment {
 
 
     private final static String TAG = "TW-RecentEntriesFrag";
 
-    private TrackingEntryViewModel trackingEntriesViewModel;
+    private TrackingEntryViewModel trackingEntryViewModel;
     private TrackingTagViewModel trackingTagViewModel;
 
     private RecentEntriesRecyclerAdapter recentEntriesRecyclerAdapter;
@@ -49,7 +47,7 @@ public class RecentEntriesFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
 
-        trackingEntriesViewModel = ViewModelProviders.of(requireActivity()).get(TrackingEntryViewModel.class);
+        trackingEntryViewModel = ViewModelProviders.of(requireActivity()).get(TrackingEntryViewModel.class);
         trackingTagViewModel = ViewModelProviders.of(requireActivity()).get(TrackingTagViewModel.class);
 
     }
@@ -70,6 +68,8 @@ public class RecentEntriesFragment extends Fragment {
 
         recentEntriesRecyclerView = initEntriesRecyclerView();
 
+
+
         trackingTagViewModel.getTrackingTags().observe(requireActivity(), new Observer<List<TrackingTag>>() {
             @Override
             public void onChanged(List<TrackingTag> trackingTags) {
@@ -85,68 +85,49 @@ public class RecentEntriesFragment extends Fragment {
             }
         });
 
-        trackingEntriesViewModel.getTrackingEntries().observe(requireActivity(), new Observer<List<TrackingEntry>>() {
+        trackingEntryViewModel.getTrackingEntries().observe(requireActivity(), new Observer<List<TrackingEntry>>() {
             @Override
             public void onChanged(List<TrackingEntry> trackingEntries) {
 
                 recentEntriesRecyclerAdapter.submitList(trackingEntries);
 
-                final RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(requireContext());
-                smoothScroller.setTargetPosition(recentEntriesRecyclerAdapter.getItemCount());
+                if(getContext() != null){
 
-                if (recentEntriesRecyclerView.getLayoutManager() == null){
-                    throw new AssertionException("Recycler view manager was null");
+                    final RecyclerView.SmoothScroller smoothScroller = new LinearSmoothScroller(requireContext());
+                    smoothScroller.setTargetPosition(recentEntriesRecyclerAdapter.getItemCount());
+
+                    if (recentEntriesRecyclerView.getLayoutManager() == null){
+                        throw new AssertionException("Recycler view manager was null");
+                    }
+
+                    recentEntriesRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
+
                 }
 
-                recentEntriesRecyclerView.getLayoutManager().startSmoothScroll(smoothScroller);
 
                 Log.i(TAG,"Tracking entries change observed: " + trackingEntries.toString());
             }
         });
 
-        trackingEntriesViewModel.getIsTracking().observe(this, new Observer<Boolean>() {
+        trackingEntryViewModel.getIsTracking().observe(this, new Observer<Boolean>() {
             @Override
             public void onChanged(Boolean isTracking) {
 
-                view.findViewById(R.id.new_entry_container).setVisibility(isTracking ? View.GONE : View.VISIBLE);
+                view.findViewById(R.id.new_entry_button_container).setVisibility(isTracking ? View.GONE : View.VISIBLE);
 
                 view.findViewById(R.id.end_tracking_container).setVisibility(isTracking ? View.VISIBLE : View.GONE);
 
             }
         });
 
-        view.findViewById(R.id.new_entry_container).setOnClickListener(new View.OnClickListener() {
+        view.findViewById(R.id.new_entry_button_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                //TODO: Implement actual entry creation process
+                final NavDirections recentToNewEntry = RecentTrackingEntriesFragmentDirections
+                        .actionRecentTrackingEntriesFragmentToNewTrackingEntryFragment();
 
-                final LiveData<List<TrackingTag>> tags = trackingTagViewModel.getTrackingTags();
-
-                final List<TrackingTag> entryTags = tags.getValue();
-
-                final List<TrackingEntry> entries = trackingEntriesViewModel.getTrackingEntries().getValue();
-
-                if (entryTags == null || entries == null || entryTags.size() <= entries.size()){
-
-                    trackingTagViewModel.insertTag(new TrackingTag(String.valueOf(Math.random())));
-
-                    return;
-
-                }
-
-                Log.i(TAG, "onClick: "+ entryTags);
-
-                trackingEntriesViewModel.insertEntry(new TrackingEntry(
-                        new SparseTrackingEntry(
-                                "Writing",
-                                Calendar.getInstance().getTime(),
-                                null
-                        ),
-                        entryTags.subList(entries.size(),entries.size()+1)
-                ));
-
-                trackingEntriesViewModel.setIsTracking(true);
+                Navigation.findNavController(view).navigate(recentToNewEntry);
 
             }
         });
@@ -154,7 +135,7 @@ public class RecentEntriesFragment extends Fragment {
         view.findViewById(R.id.end_tracking_container).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                trackingEntriesViewModel.stopCurrentTracking();
+                trackingEntryViewModel.stopCurrentTracking();
             }
         });
 

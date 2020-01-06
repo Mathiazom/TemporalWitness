@@ -1,5 +1,6 @@
 package com.example.temporal.utils;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class DateUtils {
@@ -24,6 +25,35 @@ public class DateUtils {
         }
 
         return durationText;
+
+    }
+
+
+    public static String currentTimeString(){
+
+        final Calendar now = Calendar.getInstance();
+
+        final String hour = String.valueOf(now.get(Calendar.HOUR_OF_DAY));
+        final String minute = String.valueOf(now.get(Calendar.MINUTE));
+
+        final StringBuilder currentTime = new StringBuilder();
+
+        if (hour.length() < 2){
+            currentTime.append("0");
+        }
+
+        currentTime
+                .append(hour)
+                .append(":");
+
+        if (minute.length() < 2){
+            currentTime.append("0");
+        }
+
+        currentTime.append(minute);
+
+        return currentTime.toString();
+
 
     }
 

@@ -13,8 +13,12 @@ public class TrackingTag {
 
     private final String name;
 
-    public TrackingTag(final String name) {
+    @ColumnInfo(name = "col_hex")
+    private final String colHex;
+
+    public TrackingTag(final String name, final String colHex) {
         this.name = name;
+        this.colHex = colHex;
     }
 
     public void setId(int id) {
@@ -27,5 +31,9 @@ public class TrackingTag {
 
     public String getName() {
         return name;
+    }
+
+    public String getColHex() {
+        return colHex;
     }
 }

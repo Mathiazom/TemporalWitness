@@ -42,6 +42,10 @@ public class TrackingTagRepository {
         new DeleteTagAsyncTask(trackingTagDAO).execute(trackingTag);
     }
 
+    public void deleteAllTags(){
+        new DeleteAllTagsAsyncTask(trackingTagDAO).execute();
+    }
+
 
     private static class InsertTagAsyncTask extends AsyncTask<TrackingTag, Void, Void>{
 
@@ -50,6 +54,7 @@ public class TrackingTagRepository {
         private InsertTagAsyncTask(TrackingTagDAO trackingTagDAO) {
             this.trackingTagDAO = trackingTagDAO;
         }
+
 
         @Override
         protected Void doInBackground(TrackingTag... trackingTags) {
@@ -60,7 +65,6 @@ public class TrackingTagRepository {
 
             return null;
         }
-
     }
 
     private static class UpdateTagAsyncTask extends AsyncTask<TrackingTag, Void, Void>{
@@ -97,6 +101,24 @@ public class TrackingTagRepository {
             final TrackingTag trackingTag = trackingTags[0];
 
             trackingTagDAO.delete(trackingTag);
+
+            return null;
+        }
+
+    }
+
+    private static class DeleteAllTagsAsyncTask extends AsyncTask<Void, Void, Void>{
+
+        private final TrackingTagDAO trackingTagDAO;
+
+        private DeleteAllTagsAsyncTask(TrackingTagDAO trackingTagDAO) {
+            this.trackingTagDAO = trackingTagDAO;
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+
+            trackingTagDAO.deleteAll();
 
             return null;
         }

@@ -16,6 +16,7 @@ import com.example.temporal.models.TrackingEntry;
 import com.example.temporal.models.TrackingTag;
 import com.example.temporal.utils.DateUtils;
 import com.example.temporal.utils.DiffUtility;
+import com.example.temporal.views.EntryTagView;
 
 import java.text.DateFormat;
 
@@ -89,8 +90,13 @@ public class RecentEntriesRecyclerAdapter extends ListAdapter<TrackingEntry, Rec
 
         for (TrackingTag tag : getItem(holder.getAdapterPosition()).getTags()){
 
-            final TextView tagView = (TextView) LayoutInflater.from(holder.itemView.getContext()).inflate(R.layout.recent_entry_tag_template,holder.entryTagsContainer,false);
-            tagView.setText(tag.getName());
+            final EntryTagView tagView = (EntryTagView) LayoutInflater.from(holder.itemView.getContext())
+                    .inflate(
+                            R.layout.entry_tag_template,
+                            holder.entryTagsContainer,
+                            false
+                    );
+            tagView.setTrackingTag(tag);
             holder.entryTagsContainer.addView(tagView);
 
         }

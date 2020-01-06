@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/recentTrackingEntriesFragment">
+
+    <fragment
+        android:id="@+id/recentTrackingEntriesFragment"
+        android:name="com.example.temporal.fragments.RecentTrackingEntriesFragment"
+        android:label="recent_entries_fragment"
+        tools:layout="@layout/recent_entries_fragment" >
+        <action
+            android:id="@+id/action_recentTrackingEntriesFragment_to_newTrackingEntryFragment"
+            app:destination="@id/newTrackingEntryFragment"
+            app:enterAnim="@anim/slide_up_enter_anim"
+            app:popExitAnim="@anim/slide_down_exit_anim"
+            app:popUpTo="@+id/recentTrackingEntriesFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/newTrackingEntryFragment"
+        android:name="com.example.temporal.fragments.NewTrackingEntryFragment"
+        android:label="new_tracking_entry_fragment"
+        tools:layout="@layout/new_tracking_entry_fragment" >
+        <action
+            android:id="@+id/action_newTrackingEntryFragment_to_recentTrackingEntriesFragment"
+            app:destination="@id/recentTrackingEntriesFragment"
+            app:exitAnim="@anim/slide_down_exit_anim"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_newTrackingEntryFragment_to_newTrackingTagFragment"
+            app:destination="@id/newTrackingTagFragment"
+            app:popUpTo="@+id/newTrackingEntryFragment" />
+        <argument
+            android:name="selected_tag_ids"
+            app:argType="integer[]"
+            app:nullable="true"
+            android:defaultValue="@null" />
+        <action
+            android:id="@+id/action_newTrackingEntryFragment_to_timePickerFragment"
+            app:destination="@id/timePickerFragment" />
+        <action
+            android:id="@+id/action_newTrackingEntryFragment_to_datePickerFragment"
+            app:destination="@id/datePickerFragment" />
+    </dialog>
+
+
+    <fragment
+        android:id="@+id/newTrackingTagFragment"
+        android:name="com.example.temporal.fragments.NewTrackingTagFragment"
+        android:label="new_tracking_tag_fragment"
+        tools:layout="@layout/new_tracking_tag_fragment" >
+        <action
+            android:id="@+id/action_newTrackingTagFragment_to_newTrackingEntryFragment"
+            app:destination="@id/newTrackingEntryFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/timePickerFragment"
+        android:name="com.example.temporal.fragments.TimePickerFragment"
+        android:label="time_picker_dialog"
+        tools:layout="@layout/time_picker_dialog" />
+    <dialog
+        android:id="@+id/datePickerFragment"
+        android:name="com.example.temporal.fragments.DatePickerFragment"
+        android:label="date_picker_dialog"
+        tools:layout="@layout/date_picker_dialog" />
+
+</navigation>

@@ -45,5 +45,9 @@ public class TrackingTagViewModel extends AndroidViewModel {
         trackingTagRepository.deleteTag(trackingTag);
     }
 
+    public void deleteAllTags(){
+        trackingTagRepository.deleteAllTags();
+    }
+
 
 }
